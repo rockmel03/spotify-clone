@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import useAuth from "./hooks/useAuth";
 import { Login } from "./features/auth/Login";
-import { getAccessTokenFromUrl } from "./features/auth/spotify";
-import { Home } from "./components/Home";
+import { Layout } from "./components/Layout";
+import { getAccessTokenFromUrl } from "./api/spotify";
 
 function App() {
   const [auth, dispatch] = useAuth();
@@ -14,7 +14,7 @@ function App() {
     }
   }, [dispatch]);
 
-  return <>{!auth.token ? <Login /> : <Home />}</>;
+  return <>{!auth.token ? <Login /> : <Layout />}</>;
 }
 
 export default App;

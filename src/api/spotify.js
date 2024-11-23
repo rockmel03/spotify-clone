@@ -1,6 +1,5 @@
-const URL = "https://accounts.spotify.com/api/token";
+const baseAuthUrl = "https://accounts.spotify.com";
 const CLIENT_ID = import.meta.env.VITE_API_CLIENT_ID;
-const CLIENT_SECRET_ID = import.meta.env.VITE_API_CLIENT_SECRET;
 
 const scope = [
   "user-read-playback-state",
@@ -20,7 +19,7 @@ params.append("response_type", "token");
 params.append("redirect_uri", "http://localhost:5173/");
 params.append("scope", scope.join(" "));
 
-export const redirectAuthUrl = `https://accounts.spotify.com/authorize?${params.toString()}`;
+export const redirectAuthUrl = `${baseAuthUrl}/authorize?${params.toString()}`;
 
 export const getAccessTokenFromUrl = () => {
   const hash = window.location.hash;
@@ -37,27 +36,3 @@ export const getAccessTokenFromUrl = () => {
     return hashedObj?.access_token;
   }
 };
-
-// export const requestAccessToken = async () => {
-//   try {
-//     const response = await axios.post(
-//       URL,
-//       {
-//         grant_type: "client_credentials",
-//         client_id: CLIENT_ID,
-//         client_secret: CLIENT_SECRET_ID,
-//       },
-//       {
-//         headers: {
-//           "Content-Type": "application/x-www-form-urlencoded",
-//         },
-//         withCredentials: true,
-//       }
-//     );
-
-//     console.log(response.data);
-//   } catch (error) {
-//     F;
-//     console.error(error);
-//   }
-// };
