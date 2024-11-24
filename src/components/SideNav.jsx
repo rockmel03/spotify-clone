@@ -1,4 +1,7 @@
+import { useEffect } from "react";
 import { HeartBoxIcon, HomeIcon, LiabraryIcon } from "../assets/icons/Icons";
+import useApiPrivate from "../hooks/useApiPrivate";
+import { Link } from "react-router-dom";
 
 const navLinks = [
   {
@@ -19,6 +22,19 @@ const navLinks = [
 ];
 
 export const SideNav = () => {
+  const api = useApiPrivate();
+
+  useEffect(() => {
+    api
+      .get("/me/albums")
+      .then((res) => console.log(res.data))
+      .catch((err) => console.log(err));
+    api
+      .get("/me/tracks")
+      .then((res) => console.log(res.data))
+      .catch((err) => console.log(err));
+  }, []);
+
   return (
     <nav className="flex flex-col w-full h-full p-8 bg-zinc-900 rounded">
       <ul className="flex flex-col gap-2">
@@ -27,13 +43,13 @@ export const SideNav = () => {
             key={item.link}
             className="opacity-70 hover:opacity-100 duration-200 ease-out"
           >
-            <a
-              href={item.link}
+            <Link
+              to={item.link}
               className="w-full h-full text-xl flex gap-2 items-center"
             >
               <i className="text-[2.4em]">{item.icon}</i>
               <span className="capitalize font-medium">{item.title}</span>
-            </a>
+            </Link>
           </li>
         ))}
       </ul>

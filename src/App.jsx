@@ -3,6 +3,7 @@ import { Layout } from "./components/Layout";
 import { Route, Routes } from "react-router-dom";
 import { Home } from "./components/Home";
 import { Profile } from "./features/User/Profile";
+import { LikedTracks } from "./features/User/LikedTracks";
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <Route path="/" element={<Layout />}>
         <Route index element={<Home />} />
         <Route path="profile/:id?" element={<Profile />} />
+        <Route path="liked" element={<LikedTracks />} />
 
         {/* catch all it does not exist */}
         <Route path="*" element={<p>404 - Page not found</p>} />
