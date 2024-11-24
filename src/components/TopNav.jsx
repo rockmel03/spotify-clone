@@ -1,8 +1,14 @@
+import { useNavigate } from "react-router-dom";
 import { ArrowLeftNav, ArrowRightNav, UserIcon } from "../assets/icons";
 import useAuth from "../hooks/useAuth";
 
 export const TopNav = () => {
   const [auth] = useAuth();
+  const navigate = useNavigate();
+
+  const handleProfileClick = () => {
+    navigate("/profile");
+  };
 
   return (
     <nav
@@ -18,7 +24,10 @@ export const TopNav = () => {
         </div>
       </div>
       <div>
-        <div className="w-10 aspect-square rounded-full grid place-items-center bg-black cursor-pointer overflow-hidden">
+        <button
+          onClick={handleProfileClick}
+          className="w-10 aspect-square rounded-full grid place-items-center bg-black cursor-pointer overflow-hidden"
+        >
           {auth?.user?.images?.length ? (
             <img src={auth.user.images[1].url} />
           ) : (
@@ -26,7 +35,7 @@ export const TopNav = () => {
               <UserIcon />
             </span>
           )}
-        </div>
+        </button>
       </div>
     </nav>
   );

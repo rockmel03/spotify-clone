@@ -1,38 +1,38 @@
 import { useEffect } from "react";
 import useApiPrivate from "../hooks/useApiPrivate";
-import useAuth from "../hooks/useAuth";
-import { Home } from "./Home";
 import { SideNav } from "./SideNav";
+import { Outlet } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
+import { Login } from "../features/auth/Login";
+import { getAccessTokenFromUrl } from "../api/spotify";
 
 export const Layout = () => {
   const api = useApiPrivate();
   const [auth, dispatch] = useAuth();
 
   useEffect(() => {
-    let isMounted = true;
-    const getUserData = async () => {
-      try {
-        const response = await api.get("/me");
-        if (response.status === 200) {
-          isMounted && dispatch({ type: "SET_USER", user: response.data });
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getUserData();
+    const _token = getAccessTokenFromUrl();
+    if (_token) dispatch({ type: "SET_TOKEN", token: _token });
+  }, []);
 
-    return () => {
-      isMounted = false;
-    };
-  }, [api, dispatch]);
-  return (
+  useEffect(() => {
+    if (auth?.token) {
+      api
+        .get("/me")
+        .then((res) => dispatch({ type: "SET_USER", user: res.data }))
+        .catch((err) => console.log(err));
+    }
+  }, [auth?.token]);
+
+  return !auth?.token ? (
+    <Login />
+  ) : (
     <main className="w-full h-screen grid grid-cols-[320px_1fr] grid-rows-8 gap-2 p-2 bg-zinc-950 text-zinc-100">
       <section className="sidenav row-[1/8]  overflow-y-auto">
         <SideNav />
       </section>
-      <section className="main  row-[1/8] overflow-y-auto">
-        <Home />
+      <section className="main row-[1/8] overflow-y-auto">
+        <Outlet />
       </section>
       <section className="playerbar col-span-2 row-[8/9]">
         {/* <MusicPlayerBar /> */}

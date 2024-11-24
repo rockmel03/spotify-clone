@@ -1,20 +1,22 @@
-import { useEffect } from "react";
-import useAuth from "./hooks/useAuth";
 import { Login } from "./features/auth/Login";
 import { Layout } from "./components/Layout";
-import { getAccessTokenFromUrl } from "./api/spotify";
+import { Route, Routes } from "react-router-dom";
+import { Home } from "./components/Home";
+import { Profile } from "./features/User/Profile";
 
 function App() {
-  const [auth, dispatch] = useAuth();
+  return (
+    <Routes>
+      <Route path="login" element={<Login />} />
+      <Route path="/" element={<Layout />}>
+        <Route index element={<Home />} />
+        <Route path="profile/:id?" element={<Profile />} />
 
-  useEffect(() => {
-    const _token = getAccessTokenFromUrl();
-    if (_token) {
-      dispatch({ type: "SET_TOKEN", token: _token });
-    }
-  }, [dispatch]);
-
-  return <>{!auth.token ? <Login /> : <Layout />}</>;
+        {/* catch all it does not exist */}
+        <Route path="*" element={<p>404 - Page not found</p>} />
+      </Route>
+    </Routes>
+  );
 }
 
 export default App;
