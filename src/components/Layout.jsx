@@ -5,6 +5,7 @@ import { Outlet } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import { Login } from "../features/auth/Login";
 import { getAccessTokenFromUrl } from "../api/spotify";
+import { MusicPlayerBar } from "../features/Player/MusicPlayerBar";
 
 export const Layout = () => {
   const api = useApiPrivate();
@@ -13,7 +14,7 @@ export const Layout = () => {
   useEffect(() => {
     const _token = getAccessTokenFromUrl();
     if (_token) dispatch({ type: "SET_TOKEN", token: _token });
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (auth?.token) {
@@ -22,7 +23,7 @@ export const Layout = () => {
         .then((res) => dispatch({ type: "SET_USER", user: res.data }))
         .catch((err) => console.log(err));
     }
-  }, [auth?.token]);
+  }, [auth?.token, api, dispatch]);
 
   return !auth?.token ? (
     <Login />
@@ -35,7 +36,7 @@ export const Layout = () => {
         <Outlet />
       </section>
       <section className="playerbar col-span-2 row-[8/9]">
-        {/* <MusicPlayerBar /> */}
+        <MusicPlayerBar />
       </section>
     </main>
   );

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import useApiPrivate from "../../hooks/useApiPrivate";
 import { formatDistanceToNow, parseISO } from "date-fns";
 import LikedSongsImg from "../../assets/images/liked-songs-300.png";
+import usePlayerContext from "../../hooks/usePlayerContext";
 
 export const LikedTracks = () => {
   const [data, setData] = useState({});
@@ -13,6 +14,51 @@ export const LikedTracks = () => {
       .then((res) => setData(res.data))
       .catch((err) => console.log(err));
   }, []);
+
+  const { dispatch } = usePlayerContext();
+
+  const onPlayClickHandler = (id) => {
+    const songData = data.items.find((item) => item?.track?.id === id);
+    if (songData) {
+      dispatch({
+        type: "SET_SONG",
+        song: songData.track,
+      });
+    }
+  };
+
+  const songList =
+    data?.items?.length > 0 ? (
+      data.items.map((item, index) => {
+        const { track } = item;
+        const date = formatDistanceToNow(parseISO(item.added_at));
+        const duration = (track.duration_ms / 1000 / 60)
+          .toFixed(2)
+          .replace(".", ":");
+        return (
+          <li
+            key={track.id}
+            onClick={() => onPlayClickHandler(track.id)}
+            className="grid grid-cols-[0.5fr_4fr_3fr_2fr_1.5fr] hover:bg-zinc-800 rounded p-2 cursor-pointer"
+          >
+            <p>{index + 1}</p>
+            <h3>{`${track.name.substring(0, 20)}${
+              track.name.length > 20 ? "..." : ""
+            }`}</h3>
+            <h4>
+              {`${track.album.name.substring(0, 20)}${
+                track.album.name.length > 20 ? "..." : ""
+              }`}
+            </h4>
+            <h5>{date} ago</h5>
+            <h5>{duration}</h5>
+          </li>
+        );
+      })
+    ) : (
+      <p>no items to display</p>
+    );
+
   return (
     <section>
       <div className="w-full flex gap-5 p-5">
@@ -40,29 +86,7 @@ export const LikedTracks = () => {
           <p>duration</p>
         </div>
         <br />
-        {data?.items?.length > 0 ? (
-          data.items.map((item, index) => {
-            const { track } = item;
-            const date = formatDistanceToNow(parseISO(item.added_at));
-            const duration = (track.duration_ms / 1000 / 60)
-              .toFixed(2)
-              .replace(".", ":");
-            return (
-              <li
-                key={track.id}
-                className="grid grid-cols-[0.5fr_4fr_3fr_2fr_1.5fr] hover:bg-zinc-800 rounded p-2 cursor-pointer"
-              >
-                <p>{index + 1}</p>
-                <h3>{track.name}</h3>
-                <h4>{`${track.album.name.substring(0, 20)}...`}</h4>
-                <h5>{date} ago</h5>
-                <h5>{duration}</h5>
-              </li>
-            );
-          })
-        ) : (
-          <p>no items to display</p>
-        )}
+        {songList}
       </ul>
     </section>
   );
