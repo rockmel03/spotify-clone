@@ -12,8 +12,13 @@ export const Layout = () => {
   const [auth, dispatch] = useAuth();
 
   useEffect(() => {
-    const _token = getAccessTokenFromUrl();
-    if (_token) dispatch({ type: "SET_TOKEN", token: _token });
+    if (!auth?.token) {
+      const _token = getAccessTokenFromUrl();
+      if (_token) {
+        dispatch({ type: "SET_TOKEN", token: _token });
+        localStorage.setItem("access_token", _token);
+      }
+    }
   }, [dispatch]);
 
   useEffect(() => {

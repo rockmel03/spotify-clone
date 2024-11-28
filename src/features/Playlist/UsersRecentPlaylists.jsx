@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import useApiPrivate from "../../hooks/useApiPrivate";
 import { PlayListCardHorizontal } from "./PlayListCardHorizontal";
+import { Link } from "react-router-dom";
 
 export const UsersRecentPlaylists = () => {
   const api = useApiPrivate();
@@ -23,14 +24,18 @@ export const UsersRecentPlaylists = () => {
   }, []);
 
   return (
-    <section className="gap-2 grid grid-cols-3 my-5">
+    <section className="gap-2 grid grid-cols-3 my-5 ">
       {recentPlaylists?.length > 0 &&
-        recentPlaylists.map((playlist, index) => {
-          if (index > 8) return;
-          return (
-            <PlayListCardHorizontal key={playlist.id} playlist={playlist} />
-          );
-        })}
+        recentPlaylists
+          .filter((item) => item !== null)
+          .slice(0, 9)
+          .map((playlist) => {
+            return (
+              <Link to={`/playlist/${playlist.id}`} key={playlist.id}>
+                <PlayListCardHorizontal playlist={playlist} />
+              </Link>
+            );
+          })}
     </section>
   );
 };
