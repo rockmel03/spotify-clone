@@ -4,22 +4,11 @@ import { SideNav } from "./SideNav";
 import { Outlet } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import { Login } from "../features/auth/Login";
-import { getAccessTokenFromUrl } from "../api/spotify";
 import { MusicPlayerBar } from "../features/Player/MusicPlayerBar";
 
 export const Layout = () => {
   const api = useApiPrivate();
   const [auth, dispatch] = useAuth();
-
-  useEffect(() => {
-    if (!auth?.token) {
-      const _token = getAccessTokenFromUrl();
-      if (_token) {
-        dispatch({ type: "SET_TOKEN", token: _token });
-        localStorage.setItem("access_token", _token);
-      }
-    }
-  }, [dispatch]);
 
   useEffect(() => {
     if (auth?.token) {
