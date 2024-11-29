@@ -24,7 +24,7 @@ export const UsersRecentPlaylists = () => {
   }, []);
 
   return (
-    <section className="gap-2 grid grid-cols-3 my-5 ">
+    <section className="gap-2 grid grid-cols-2 md:grid-cols-3 my-5 ">
       {recentPlaylists?.length > 0 &&
         recentPlaylists
           .filter((item) => item !== null)

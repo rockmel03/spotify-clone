@@ -1,7 +1,5 @@
-import { useEffect } from "react";
 import { HeartBoxIcon, HomeIcon, LiabraryIcon } from "../assets/icons/Icons";
-import useApiPrivate from "../hooks/useApiPrivate";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const navLinks = [
   {
@@ -22,34 +20,22 @@ const navLinks = [
 ];
 
 export const SideNav = () => {
-  const api = useApiPrivate();
-
-  useEffect(() => {
-    api
-      .get("/me/albums")
-      .then((res) => console.log(res.data))
-      .catch((err) => console.log(err));
-    api
-      .get("/me/tracks")
-      .then((res) => console.log(res.data))
-      .catch((err) => console.log(err));
-  }, []);
-
   return (
     <nav className="flex flex-col w-full h-full p-8 bg-zinc-900 rounded">
       <ul className="flex flex-col gap-2">
         {navLinks.map((item) => (
-          <li
-            key={item.link}
-            className="opacity-70 hover:opacity-100 duration-200 ease-out"
-          >
-            <Link
+          <li key={item.link} className="">
+            <NavLink
               to={item.link}
-              className="w-full h-full text-xl flex gap-2 items-center"
+              className={(state) =>
+                `w-full h-full text-xl flex gap-2 items-center ${
+                  state.isActive ? "opacity-100" : "opacity-70"
+                } hover:opacity-100 duration-200 ease-out`
+              }
             >
               <i className="text-[2.4em]">{item.icon}</i>
               <span className="capitalize font-medium">{item.title}</span>
-            </Link>
+            </NavLink>
           </li>
         ))}
       </ul>
@@ -57,16 +43,20 @@ export const SideNav = () => {
       <ul className="flex flex-col overflow-auto">
         {[{}, {}, {}, {}, {}, {}, {}, {}].map((playlist, index) => (
           <li key={index}>
-            <a
-              href="#"
-              className="flex gap-2 items-center p-2 rounded hover:bg-zinc-800"
+            <NavLink
+              to={`playlist/${index}`}
+              className={(state) =>
+                `flex gap-2 items-center p-2 rounded hover:bg-zinc-800 ${
+                  state.isActive ? "bg-zinc-800" : "bg-transparent"
+                }`
+              }
             >
-              <div className="w-[20%]  aspect-square bg-zinc-500 rounded overflow-hidden"></div>
+              <div className="w-[20%] aspect-square bg-zinc-500 rounded overflow-hidden"></div>
               <div>
-                <h3>playlist {(Math.random() * 10).toFixed(0)}</h3>
+                <h3>playlist {index + 1}</h3>
                 <p className="text-[0.9em] opacity-80">ROCK MEL</p>
               </div>
-            </a>
+            </NavLink>
           </li>
         ))}
       </ul>

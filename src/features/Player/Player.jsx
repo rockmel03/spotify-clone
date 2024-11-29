@@ -21,7 +21,7 @@ export const Player = () => {
   const { song, isPlaying } = state;
 
   return (
-    <section className="flex flex-col items-center justify-center px-3 gap-1">
+    <section className="w-full h-full flex flex-col items-center justify-center px-3 gap-1">
       <div className="text-4xl flex items-center justify-center gap-2">
         <button className="text-[.8em] opacity-80 hover:opacity-100 active:scale-[.9] duration-150 ease-out">
           <ShuffleIcon />

@@ -1,7 +1,7 @@
 export const PlayListCard = ({ playlist }) => {
   return (
     <article className="p-2 hover:bg-zinc-800 rounded cursor-pointer ease duration-200">
-      <div className="bg-zinc-700 w-full aspect-square rounded">
+      <div className="bg-zinc-700 w-full aspect-square rounded overflow-hidden">
         <img
           src={playlist.images[0].url}
           alt={playlist.name}

@@ -1,7 +1,7 @@
 export const PlayListCardHorizontal = ({ playlist }) => {
   return (
     <div className="flex gap-2 bg-zinc-600/20 hover:bg-zinc-600/40 ease duration-300 rounded">
-      <div className="w-[20%] aspect-square rounded bg-zinc-700">
+      <div className="w-[15%] min-w-12 aspect-square rounded bg-zinc-700 overflow-hidden">
         <img
           src={playlist?.images[0]?.url}
           alt={playlist?.name}

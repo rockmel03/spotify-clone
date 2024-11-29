@@ -12,10 +12,12 @@ import usePlayerContext from "../../hooks/usePlayerContext";
 export const MusicPlayerBar = () => {
   const { volume, handleVolumeChange } = usePlayerContext();
   return (
-    <div className="w-full h-full bg-zinc-900 grid grid-cols-[1fr_2fr_1fr] gap-2">
+    <div className="w-full h-full bg-zinc-900 grid grid-cols-1 sm:grid-cols-[1fr_2fr_1fr] gap-2">
       <MusicDetails />
-      <Player />
-      <section className=" text-xl flex gap-2 items-center justify-center">
+      <div className="hidden sm:block">
+        <Player />
+      </div>
+      <section className=" text-xl hidden sm:flex gap-2 items-center justify-center">
         <button className="nowplaying active:scale-[.9] duration-150 ease-out">
           <PlaySquareIcon />
         </button>
