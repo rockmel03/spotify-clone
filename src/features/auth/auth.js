@@ -68,7 +68,6 @@ export const getUrlParams = () => {
     acc[name] = value;
     return acc;
   }, {});
-  console.log(data);
   return data;
 };
 
@@ -90,7 +89,16 @@ export const requestAccessToken = async (code) => {
   };
 
   const response = await fetch(tokenEndpoint, payload);
-  return await response.json();
+  const data = await response.json();
+
+  if (!response.ok)
+    throw new Error(`failed to get Access token! Error: ${response.json()}`);
+
+  if (data?.refresh_token) {
+    localStorage.setItem("refresh_token", data.refresh_token);
+  }
+
+  return data;
 };
 
 export const refreshAccessToken = async () => {
@@ -108,12 +116,14 @@ export const refreshAccessToken = async () => {
     }),
   };
 
-  const body = await fetch(tokenEndpoint, payload);
-  const response = await body.json();
+  const response = await fetch(tokenEndpoint, payload);
+  const data = await response.json();
+  if (!response.ok)
+    throw new Error(`Failed to refresh token :${response.json()}`);
 
-  if (response?.refresh_token) {
-    localStorage.setItem("refresh_token", response.refresh_token);
+  if (data?.refresh_token) {
+    localStorage.setItem("refresh_token", data.refresh_token);
   }
 
-  return response;
+  return data;
 };

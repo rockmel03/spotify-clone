@@ -1,27 +1,9 @@
-import { useEffect } from "react";
-import useApiPrivate from "../hooks/useApiPrivate";
 import { SideNav } from "./SideNav";
 import { Outlet } from "react-router-dom";
-import useAuth from "../hooks/useAuth";
-import { Login } from "../features/auth/Login";
 import { MusicPlayerBar } from "../features/Player/MusicPlayerBar";
 
 export const Layout = () => {
-  const api = useApiPrivate();
-  const [auth, dispatch] = useAuth();
-
-  useEffect(() => {
-    if (auth?.token) {
-      api
-        .get("/me")
-        .then((res) => dispatch({ type: "SET_USER", user: res.data }))
-        .catch((err) => console.log(err));
-    }
-  }, [auth?.token, api, dispatch]);
-
-  return !auth?.token ? (
-    <Login />
-  ) : (
+  return (
     <main className="w-full h-screen grid grid-cols-[320px_1fr] grid-rows-8 gap-2 p-2 bg-zinc-950 text-zinc-100">
       <section className="sidenav row-[1/8]  overflow-y-auto">
         <SideNav />

@@ -27,6 +27,7 @@ const AuthCallback = () => {
           );
 
         dispatch({ type: "SET_TOKEN", token: res.access_token });
+        localStorage.setItem("isLoggedIn", true);
       })
       .catch((err) => {
         setErrMsg(err.message);

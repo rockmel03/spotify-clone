@@ -6,6 +6,7 @@ import { Profile } from "./features/User/Profile";
 import { LikedTracks } from "./features/User/LikedTracks";
 import PlaylistDetail from "./features/Playlist/PlaylistDetail";
 import AuthCallback from "./features/auth/AuthCallback";
+import { RequireAuth } from "./features/auth/RequireAuth";
 
 function App() {
   return (
@@ -13,11 +14,14 @@ function App() {
       <Route path="login" element={<Login />} />
       <Route path="callback" element={<AuthCallback />} />
       <Route path="/" element={<Layout />}>
-        <Route index element={<Home />} />
-        <Route path="home" element={<Home />} />
-        <Route path="profile/:id?" element={<Profile />} />
-        <Route path="liked" element={<LikedTracks />} />
-        <Route path="playlist/:id?" element={<PlaylistDetail />} />
+        {/* protected routes */}
+        <Route element={<RequireAuth />}>
+          <Route index element={<Home />} />
+          <Route path="home" element={<Home />} />
+          <Route path="profile/:id?" element={<Profile />} />
+          <Route path="liked" element={<LikedTracks />} />
+          <Route path="playlist/:id?" element={<PlaylistDetail />} />
+        </Route>
 
         {/* catch all it does not exist */}
         <Route path="*" element={<p>404 - Page not found</p>} />
